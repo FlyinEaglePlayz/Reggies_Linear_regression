@@ -1,0 +1,99 @@
+# Task 1
+# Write your get_y() function here
+# Be sure to organize M, B, X. If its in any other order the logic outputs False.
+def get_y(m, b, x):
+  return m*x + b
+# Uncomment each print() statement to check your work. Each of the following should print True
+print(get_y(1, 0, 7) == 7)
+print(get_y(5, 10, 3) == 25)
+
+
+# Tasks 2 and 3
+# Write your calculate_error() function here
+def calculate_error(m, b, point):
+  x_point, y_point = point # Step 1 & 2: Extract x and y from the point
+  y_predicted = get_y(m, b, x_point) # Step 3: Get predicted y using get_y()
+  return abs(y_point - y_predicted) # Step 4 & 5: Return absolute difference
+
+# Task 4
+# Uncomment each print() statement and check the output against the expected result
+
+# this is a line that looks like y = x, so (3, 3) should lie on it. thus, error should be 0:
+print(calculate_error(1, 0, (3, 3)))
+
+# the point (3, 4) should be 1 unit away from the line y = x:
+print(calculate_error(1, 0, (3, 4)))
+
+# the point (3, 3) should be 1 unit away from the line y = x - 1:
+print(calculate_error(1, -1, (3, 3)))
+
+# the point (3, 3) should be 5 units away from the line y = -x + 1:
+print(calculate_error(-1, 1, (3, 3)))
+
+
+# Task 5
+# Write your calculate_all_error() function here
+def calculate_all_error(m, b, points):
+  total_error = 0 # Initialize running total of error
+  for point in points: # Iterate through each point in the dataset
+    total_error += calculate_error(m, b, point) # Add the error from each point
+  return total_error # Return the cumulative error
+
+
+# Task 6
+# Uncomment each print() statement and check the output against the expected result
+datapoints = [(1, 1), (3, 3), (5, 5), (-1, -1)]
+
+# every point in this dataset lies upon y=x, so the total error should be zero:
+print(calculate_all_error(1, 0, datapoints))
+
+# every point in this dataset is 1 unit away from y = x + 1, so the total error should be 4:
+print(calculate_all_error(1, 1, datapoints))
+
+# every point in this dataset is 1 unit away from y = x - 1, so the total error should be 4:
+print(calculate_all_error(1, -1, datapoints))
+
+# the points in this dataset are 1, 5, 9, and 3 units away from y = -x + 1, respectively, so total error should be
+# 1 + 5 + 9 + 3 = 18
+print(calculate_all_error(-1, 1, datapoints))
+
+# Task 7 
+test_m_values = [-10, 0, 10]
+test_b_values = [-20, 0, 20]
+
+for m in test_m_values:
+  for b in test_b_values:
+    error = calculate_all_error(m, b, datapoints)
+    print(f"Testing m={m}, b={b}, error={error}")
+
+# Tasks 8 and 9
+possible_ms = [x * 0.1 for x in range(-100, 101)]
+possible_bs = [x * 0.1 for x in range(-200, 201)]
+
+
+# Task 10
+datapoints = [(1, 2), (2, 0), (3, 4), (4, 4), (5, 3)]
+
+smallest_error = float('inf') #start with infinity so any actual error will be smaller
+best_m = 0 # Initialize best m at 0
+best_b = 0 # Initialize best b at 0
+
+# Tasks 11 and 12
+# Iterate through each possible m value
+for m in possible_ms:
+  # Iterate through each possible b value
+  for b in possible_bs:
+    # Calculate the error for this combination of m and b
+    error = calculate_all_error(m, b, datapoints)
+    # If this error is smaller than the smallest error we've seen, update best values
+    if error < smallest_error:
+      smallest_error = error
+      best_m = m
+      best_b = b
+      print(f"New best found! m: {best_m}, b: {best_b}, error: {smallest_error}")
+
+
+# Task 13
+predicted_bounce_height = get_y(0.4, 1.6, 6)
+print("Predicted bounce height for a ball with width 6:", predicted_bounce_height)
+
